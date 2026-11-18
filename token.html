@@ -44,6 +44,16 @@
   <h1>词达人 · 取 token 助手</h1>
   <p class="sub">授权一次 → 拿到链接 → 自动换取 token。全程在你的浏览器里完成，不经过任何第三方服务器。</p>
 
+  <div class="card" id="envTip" style="display:none;background:#eef6f0;border-color:#cfe5d6">
+    <div class="step" style="margin:0">
+      <div class="num" style="background:#1f6f4a">i</div>
+      <div>
+        <h3>检测到不在微信里</h3>
+        <p>第 1 步「开始授权」需要手机微信才能完成。<b>换 token 不受影响</b>：你可以让手机微信走完授权、复制链接，再到这里粘贴。</p>
+      </div>
+    </div>
+  </div>
+
   <div class="card">
     <div class="step">
       <div class="num">1</div>
@@ -278,6 +288,11 @@
   // ---------- UI ----------
   var out = $("out"), timerEl = $("timer"), msgEl = $("msg"), actions = $("actions");
   var currentToken = "", timerId = 0;
+
+  if (!/MicroMessenger/i.test(navigator.userAgent || "")) {
+    var tip = $("envTip");
+    if (tip) tip.style.display = "block";
+  }
 
   $("go").addEventListener("click", function () {
     if (!/MicroMessenger/i.test(navigator.userAgent || "")) {
