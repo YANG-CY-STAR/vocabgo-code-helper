@@ -57,7 +57,7 @@
       <div class="num">1</div>
       <div>
         <h3>点击开始授权</h3>
-        <p>会跳转到微信授权页，点「允许」即可。</p>
+        <p>跳转到微信授权页，点「允许」。</p>
       </div>
     </div>
     <button class="btn" id="go">开始授权 →</button>
@@ -67,29 +67,29 @@
     <div class="step">
       <div class="num">2</div>
       <div>
-        <h3>跳转瞬间：开飞行模式 <span class="tag">关键</span></h3>
-        <p>看到页面开始加载词达人首页时，立刻下拉控制中心打开飞行模式。这样页面加载不出来，code 就不会被用掉。</p>
+        <h3>会出现一个「404 Not Found」页面 <span class="tag">正常</span></h3>
+        <p>这是故意的：这个页面没有脚本，所以 <code>code</code> 不会被用掉，会留在网址里。</p>
       </div>
     </div>
     <div class="step">
       <div class="num">3</div>
       <div>
-        <h3>复制链接</h3>
-        <p>点右上角 <b>…</b> → 复制链接。此时链接里应该带着 <code>code=</code>。</p>
+        <h3>点右上角 … → 复制链接</h3>
+        <p>不用开飞行模式、不用关微信，直接复制就行。</p>
       </div>
     </div>
     <div class="step">
       <div class="num">4</div>
       <div>
-        <h3>杀掉微信再恢复网络</h3>
-        <p>上滑后台把微信彻底划掉，然后关闭飞行模式。否则页面会重新加载、把 code 用掉。</p>
+        <h3>把链接粘到下面</h3>
+        <p>自动提取 code，复制后发到电脑。</p>
       </div>
     </div>
   </div>
 
   <div class="card">
     <div class="step">
-      <div class="num">5</div>
+      <div class="num">✓</div>
       <div>
         <h3>把链接粘到这里</h3>
         <p>自动帮你把 code 提取出来，复制后发到电脑。</p>
@@ -100,7 +100,7 @@
     <div class="code" id="out"></div>
     <button class="btn" id="copy" style="display:none;margin-top:10px">复制 code</button>
     <div class="timer" id="timer"></div>
-    <p class="hint" id="msg">code 只能用一次，有效期约 5 分钟，提取后请尽快发到电脑。</p>
+    <p class="hint" id="msg">code 只能用一次，有效期约 5 分钟。复制后尽快发到电脑换 token。</p>
   </div>
 
   <div class="card">
@@ -127,7 +127,7 @@
 
   // 词达人官方 appid 与回调地址
   var APPID = "wx2a694105a6abbe6d";
-  var REDIRECT = "https://app.vocabgo.com/student/?authorize=2";
+  var REDIRECT = "https://app.vocabgo.com/student/_cb";
   var AUTH_URL = "https://open.weixin.qq.com/connect/oauth2/authorize"
     + "?appid=" + APPID
     + "&redirect_uri=" + encodeURIComponent(REDIRECT)
