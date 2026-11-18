@@ -6,8 +6,8 @@
 <title>词达人 Token</title>
 <style>
   :root{
-    --bg:#0f1115; --card:#171a21; --line:#252a35; --ink:#e8eaf0; --sub:#8b93a7;
-    --accent:#e8563f; --ok:#3ecf8e; --warn:#e0a83a;
+    --bg:#f6f6f8; --card:#ffffff; --line:#e6e7eb; --ink:#17181c; --sub:#6f7686;
+    --accent:#d9482f; --ok:#1a7f4b; --warn:#9a6a12;
   }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   html,body{height:100%}
@@ -32,24 +32,24 @@
   textarea{
     width:100%;min-height:72px;padding:11px;border:1px solid var(--line);border-radius:10px;
     font-size:13px;font-family:ui-monospace,Menlo,monospace;resize:vertical;
-    background:#11141a;color:var(--ink);margin:0 0 10px;
+    background:#fbfbfc;color:var(--ink);margin:0 0 10px;
   }
-  textarea::placeholder{color:#4d5566}
+  textarea::placeholder{color:#a3a8b4}
   textarea:focus{outline:none;border-color:var(--accent)}
   .out{
-    font-family:ui-monospace,Menlo,monospace;font-size:13px;background:#11141a;border:1px solid var(--line);
+    font-family:ui-monospace,Menlo,monospace;font-size:13px;background:#fbfbfc;border:1px solid var(--line);
     border-radius:10px;padding:11px;word-break:break-all;white-space:pre-wrap;display:none;margin:10px 0 0;line-height:1.6;
   }
-  .out.ok{border-color:#1f5c42;color:var(--ok)}
-  .out.err{border-color:#5c2a22;color:#e88a7a}
+  .out.ok{border-color:#bfe3cf;background:#f2faf5;color:var(--ok)}
+  .out.err{border-color:#f0cfc8;background:#fdf4f2;color:#b23c22}
   .timer{display:none;margin:8px 0 0;font-size:12px;color:var(--warn)}
   .row{display:flex;gap:8px;margin-top:10px}
   .row .btn{margin:0}
   .qr{text-align:center;margin-top:4px}
-  .qr img{width:150px;height:150px;border-radius:10px;background:#fff;padding:6px}
+  .qr img{width:150px;height:150px;border-radius:10px;background:#fff;padding:6px;border:1px solid var(--line)}
   .qr p{color:var(--sub);font-size:12px;margin:6px 0 0}
-  footer{margin-top:20px;color:#4d5566;font-size:11.5px;text-align:center}
-  .notice{background:#1c1a14;border-color:#3d3520;color:var(--warn);font-size:12.5px;padding:10px 12px;display:none}
+  footer{margin-top:20px;color:#a3a8b4;font-size:11.5px;text-align:center}
+  .notice{background:#fff9ea;border-color:#f2e2bd;color:var(--warn);font-size:12.5px;padding:10px 12px;display:none}
 </style>
 </head>
 <body>
@@ -80,7 +80,7 @@
     <p>手机扫码打开</p>
   </div>
 
-  <footer>纯前端 · 数据不离开设备 · v4</footer>
+  <footer>纯前端 · 数据不离开设备 · v5</footer>
 </div>
 
 <script>
