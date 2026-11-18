@@ -3,566 +3,98 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>词达人 Token 工具 · 单文件版</title>
+<title>词达人 Token</title>
 <style>
-  :root{--bg:#f6f6f8;--card:#fff;--line:#e6e7eb;--ink:#17181c;--sub:#6f7686;--accent:#d9482f;--ok:#1a7f4b;--warn:#9a6a12;--code:#f7f7f9}
+  :root{
+    --bg:#f6f6f8; --card:#ffffff; --line:#e6e7eb; --ink:#17181c; --sub:#6f7686;
+    --accent:#d9482f; --ok:#1a7f4b; --warn:#9a6a12;
+  }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-  body{margin:0;padding:20px 16px 48px;background:var(--bg);color:var(--ink);
-       font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue",sans-serif;line-height:1.65;font-size:15px}
-  .wrap{max-width:720px;margin:0 auto}
-  h1{font-size:20px;margin:0 0 4px}
-  .sub{color:var(--sub);font-size:13px;margin:0 0 18px}
-  nav{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 16px}
-  nav button{border:1px solid var(--line);background:#fff;color:var(--sub);padding:7px 12px;border-radius:999px;
-             font-size:13px;cursor:pointer;font-family:inherit}
-  nav button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
-  section{display:none}
-  section.on{display:block}
-  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin:0 0 12px}
-  h2{font-size:15.5px;margin:0 0 10px}
-  p{margin:0 0 10px}
-  ul,ol{margin:0 0 10px;padding-left:20px}
-  li{margin:0 0 4px}
-  code{background:var(--code);padding:1px 5px;border-radius:4px;font-family:ui-monospace,Menlo,monospace;font-size:12.5px}
-  pre{background:var(--code);border:1px solid var(--line);border-radius:10px;padding:12px;overflow:auto;
-      font-family:ui-monospace,Menlo,monospace;font-size:12px;line-height:1.55;margin:8px 0 0;white-space:pre}
-  .btn{display:block;width:100%;padding:13px;border:0;border-radius:10px;font-size:15px;font-weight:600;color:#fff;
-       background:var(--accent);cursor:pointer;font-family:inherit;margin:0 0 8px}
-  .btn:disabled{opacity:.5}
-  .btn.ghost{background:#fff;color:var(--ink);border:1px solid var(--line)}
-  .row{display:flex;gap:8px}
-  .row .btn{margin:0}
-  textarea{width:100%;min-height:70px;padding:11px;border:1px solid var(--line);border-radius:10px;font-size:13px;
-           font-family:ui-monospace,Menlo,monospace;background:#fbfbfc;color:var(--ink);margin:0 0 10px;resize:vertical}
+  html,body{height:100%}
+  body{
+    margin:0;padding:24px 18px 32px;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue",sans-serif;
+    font-size:15px;line-height:1.55;display:flex;justify-content:center;
+  }
+  .wrap{width:100%;max-width:440px}
+  h1{font-size:17px;font-weight:600;margin:0 0 2px;letter-spacing:.3px}
+  .sub{color:var(--sub);font-size:12.5px;margin:0 0 22px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin:0 0 12px}
+  .card:last-of-type{margin-bottom:0}
+  .btn{
+    display:block;width:100%;padding:14px;border:0;border-radius:10px;font-size:15.5px;font-weight:600;
+    color:#fff;background:var(--accent);cursor:pointer;font-family:inherit;letter-spacing:.3px;
+    transition:opacity .15s;
+  }
+  .btn:active{opacity:.8}
+  .btn:disabled{opacity:.45;cursor:default}
+  .btn.sec{background:transparent;color:var(--ink);border:1px solid var(--line)}
+  textarea{
+    width:100%;min-height:72px;padding:11px;border:1px solid var(--line);border-radius:10px;
+    font-size:13px;font-family:ui-monospace,Menlo,monospace;resize:vertical;
+    background:#fbfbfc;color:var(--ink);margin:0 0 10px;
+  }
+  textarea::placeholder{color:#a3a8b4}
   textarea:focus{outline:none;border-color:var(--accent)}
-  .out{font-family:ui-monospace,Menlo,monospace;font-size:13px;background:#fbfbfc;border:1px solid var(--line);
-       border-radius:10px;padding:11px;word-break:break-all;white-space:pre-wrap;display:none;margin:10px 0 0}
+  .out{
+    font-family:ui-monospace,Menlo,monospace;font-size:13px;background:#fbfbfc;border:1px solid var(--line);
+    border-radius:10px;padding:11px;word-break:break-all;white-space:pre-wrap;display:none;margin:10px 0 0;line-height:1.6;
+  }
   .out.ok{border-color:#bfe3cf;background:#f2faf5;color:var(--ok)}
   .out.err{border-color:#f0cfc8;background:#fdf4f2;color:#b23c22}
   .timer{display:none;margin:8px 0 0;font-size:12px;color:var(--warn)}
-  .tip{margin:10px 0 0;color:var(--sub);font-size:12.5px;display:flex;gap:6px}
-  .tip .dot{flex:0 0 16px;height:16px;border-radius:50%;background:#fff3e8;color:#b45309;font-size:11px;
-            display:flex;align-items:center;justify-content:center;margin-top:2px}
+  .row{display:flex;gap:8px;margin-top:10px}
+  .row .btn{margin:0}
+  .qr{text-align:center;margin-top:4px}
+  .qr img{width:150px;height:150px;border-radius:10px;background:#fff;padding:6px;border:1px solid var(--line)}
+  .qr p{color:var(--sub);font-size:12px;margin:6px 0 0}
+  footer{margin-top:20px;color:#a3a8b4;font-size:11.5px;text-align:center;line-height:1.7}
+  footer p{margin:0 0 6px}
+  .disclaimer{color:#9aa0ad;background:#f1f2f5;border-radius:8px;padding:9px 10px;font-size:11px;line-height:1.65}
+  .tip{margin:10px 0 0;color:var(--sub);font-size:12.5px;display:flex;gap:6px;align-items:flex-start}
+  .tip b{color:var(--ink);font-weight:600}
+  .tip .dot{flex:0 0 16px;height:16px;border-radius:50%;background:#fff3e8;color:#b45309;
+            font-size:11px;display:flex;align-items:center;justify-content:center;margin-top:2px}
   .notice{background:#fff9ea;border-color:#f2e2bd;color:var(--warn);font-size:12.5px;padding:10px 12px;display:none}
-  table{width:100%;border-collapse:collapse;font-size:13px;margin:8px 0}
-  th,td{border:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
-  th{background:#fafafb;font-weight:600}
-  .qr{text-align:center}
-  .qr img{width:150px;height:150px;border-radius:10px;border:1px solid var(--line);padding:6px;background:#fff}
-  footer{margin-top:20px;color:#9aa0ad;font-size:11.5px;text-align:center;line-height:1.7}
-  .disclaimer{background:#f1f2f5;border-radius:8px;padding:9px 10px;font-size:11px;line-height:1.65;color:#7c828f}
 </style>
 </head>
 <body>
 <div class="wrap">
 
-  <h1>词达人 Token 工具</h1>
-  <p class="sub">单文件版 · 取 token + 使用说明 + 原理解析 + 自动化脚本</p>
+  <h1>词达人 Token</h1>
+  <p class="sub">授权 → 复制跳转链接 → 换 token</p>
 
-  <nav>
-    <button data-tab="tool" class="on">取 Token</button>
-    <button data-tab="guide">使用说明</button>
-    <button data-tab="how">原理解析</button>
-    <button data-tab="code">脚本源码</button>
-    <button data-tab="faq">常见问题</button>
-  </nav>
+  <div class="card notice" id="envTip">请用手机微信打开本页完成授权；换 token 不限环境。</div>
 
-  <section id="tool" class="on">
-    <div class="card notice" id="envTip">请用手机微信打开本页完成授权；换 token 不限环境。</div>
-
-    <div class="card">
-      <h2>第一步 · 授权</h2>
-      <button class="btn" id="go">微信授权</button>
-      <div class="tip">
-        <span class="dot">!</span>
-        <span>跳转后显示 <b>404 Not Found 属正常</b>，此时点右上角 <b>…</b> → 复制链接</span>
-      </div>
+  <div class="card">
+    <button class="btn" id="go">微信授权</button>
+    <div class="tip">
+      <span class="dot">!</span>
+      <span>跳转后显示 <b>404 Not Found 属正常</b>，此时点右上角 <b>…</b> → 复制链接</span>
     </div>
+  </div>
 
-    <div class="card">
-      <h2>第二步 · 换 Token</h2>
-      <textarea id="paste" placeholder="粘贴授权后的链接（含 code=）"></textarea>
-      <button class="btn" id="exchange">获取 Token</button>
-      <div class="timer" id="timer"></div>
-      <div class="out" id="out"></div>
-      <div class="row" id="actions" style="display:none;margin-top:10px">
-        <button class="btn ghost" id="copyToken">复制</button>
-        <button class="btn ghost" id="checkUser">验证账号</button>
-      </div>
+  <div class="card">
+    <textarea id="paste" placeholder="粘贴授权后的链接（含 code=）"></textarea>
+    <button class="btn" id="exchange">获取 Token</button>
+    <div class="timer" id="timer"></div>
+    <div class="out" id="out"></div>
+    <div class="row" id="actions" style="display:none">
+      <button class="btn sec" id="copyToken">复制</button>
+      <button class="btn sec" id="checkUser">验证</button>
     </div>
+  </div>
 
-    <div class="card qr">
-      <img alt="扫码打开" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUAAAAFAAQMAAAD3XjfpAAAABlBMVEX///8AAABVwtN+AAAACXBIWXMAAA7EAAAOxAGVKw4bAAAB/0lEQVRoge2aTY7CMAyFjVh02SP0KD1aezSOwhG6ZIHw5Pkn7YiZHUqD9CwBwv3Szasd26kI7TOmaSv+Tarl++Ke7VovEjwBvJlAV12np+h9gPslMr5kKaCtloHgKeDoaq3iisn8EJcRzqIpVhP8CtAjUEzrecsHgOD5IC5ND4TlxT7/a02wM1BSViTS2POq034JngKm5RZX8mORMLa4NIIdg+82W5VSrm5/XibYCHSJUi3Uj7cBW9xF1/Epy/2qSJoEOwaLtIfGLLc4C8vRQzMSKcHGoKdCk6+oBR9WwoktDnteRiHBXkHky2VzrWOLE0ukeABwhxquBJuCdcjhEh6asyUatCojwT7BqPbDpzH1yGSqekikBNuCUCwljOLDm7PFoF1Cgp2Ce6mo3l97c5biwxGJlGBjMGe7deqBSJxrY3YsQAh2CUapWAzV/pRjxZg1qsY4hOAJ4EGpkPG1Tz8yNAn2DEJrG3K45Iex4v4AEDwJrLPd+xBlo0YvDQlVlWDH4G5TbaXzVQ53EjwHTMnitDlmUrodjyrtPgS7BW/248eXUZBklSKeSOV3lUKwFVhf5XhG0EVlv5iyyI+5xRHsHQwINgfkheX7azsEm4I5+dA4TbHKvq4m2C9o4kYUms6P/T0pWG0BCLYF00xCGFbarDHu8F6lEOwKpH3CfgC4EYl6ubFavQAAAABJRU5ErkJggg==">
-      <p style="color:var(--sub);font-size:12px;margin:6px 0 0">手机扫码打开本页</p>
-    </div>
-  </section>
-
-  <section id="guide">
-    <div class="card">
-      <h2>它能做什么</h2>
-      <p>用微信授权换取词达人（VocabGo）的登录 token。拿到 token 后可以：</p>
-      <ul>
-        <li>查询账号信息、课程、任务列表、进度与得分</li>
-        <li>调用它的接口（需自行实现签名）</li>
-        <li>配合浏览器自动化脚本刷学习任务</li>
-      </ul>
-      <p><b>不能</b>做的事：绕过考试、替考、修改成绩。本工具只做登录凭证转换。</p>
-    </div>
-
-    <div class="card">
-      <h2>三步拿到 token</h2>
-      <ol>
-        <li><b>授权</b>：在微信里打开本页，点「微信授权」，点「允许」</li>
-        <li><b>复制</b>：出现 404 页面时，点右上角 <code>…</code> → 复制链接</li>
-        <li><b>换 token</b>：回到本页，粘贴链接，点「获取 Token」</li>
-      </ol>
-      <p>成功后页面直接显示 token，可一键复制。</p>
-    </div>
-
-    <div class="card">
-      <h2>关键注意事项</h2>
-      <table>
-        <tr><th>事项</th><th>说明</th></tr>
-        <tr><td>code 一次性</td><td>有效期约 5 分钟，只能用一次；失败要重新授权</td></tr>
-        <tr><td>不要重复粘贴</td><td>粘进页面就会被消费，再粘第二次必然失败</td></tr>
-        <tr><td>必须 https</td><td>页面用了 WebCrypto，http 下无法工作</td></tr>
-        <tr><td>授权必须在微信里</td><td>电脑浏览器无法完成微信 OAuth</td></tr>
-      </table>
-    </div>
-
-    <div class="card">
-      <h2>拿到 token 之后</h2>
-      <p>token 是 32 位十六进制字符串。调接口时放在请求头 <code>UserToken</code> 里：</p>
-      <pre id="snippet-http"></pre>
-    </div>
-  </section>
-
-  <section id="how">
-    <div class="card">
-      <h2>整条链路</h2>
-      <pre id="snippet-flow"></pre>
-    </div>
-
-    <div class="card">
-      <h2>1 · 微信 OAuth</h2>
-      <p>词达人学生端只支持微信登录，授权地址是：</p>
-      <pre id="snippet-oauth"></pre>
-      <p>授权成功后微信会跳回 <code>redirect_uri</code>，并在 URL 上带一个一次性的 <code>code</code>。</p>
-    </div>
-
-    <div class="card">
-      <h2>2 · 404 技巧（让 code 活下来）</h2>
-      <p>正常情况下，词达人的前端会立刻用 code 换 token，URL 里的 code 瞬间失效。</p>
-      <p><b>解决办法</b>：把 <code>redirect_uri</code> 指向一个不存在的路径：</p>
-      <pre id="snippet-404"></pre>
-      <p>该路径返回 nginx 的 404 静态页，没有任何 JS，所以 code 不会被使用，留在地址栏里可以复制。</p>
-      <p>实测：微信不校验回调路径，只校验域名，所以这个技巧成立。</p>
-    </div>
-
-    <div class="card">
-      <h2>3 · V2 登录协议（本工具核心）</h2>
-      <p>登录接口是 <code>POST /student/api/Auth/Wechat/V2/LoginByWechatCode</code>，采用混合加密：</p>
-      <pre id="snippet-crypto"></pre>
-      <p>响应结构：</p>
-      <pre id="snippet-envelope"></pre>
-      <p>解密后得到 token 等字段，其中 <code>token</code> 就是凭证。</p>
-    </div>
-
-    <div class="card">
-      <h2>4 · 请求签名</h2>
-      <p>所有接口都要带签名，算法在前端 <code>doSign</code> 里：</p>
-      <pre id="snippet-sign"></pre>
-      <p>盐值 <code>ajfajfamsnfaflfasakljdlalkflak</code> 是从它的 JS 包里提取的。</p>
-    </div>
-
-    <div class="card">
-      <h2>5 · 为什么浏览器能直接调接口</h2>
-      <p>词达人接口的 CORS 是开放的（会回显 Origin）：</p>
-      <pre id="snippet-cors"></pre>
-      <p>所以整个换 token 过程可以纯前端完成，不需要任何后端服务器。</p>
-    </div>
-  </section>
-
-  <section id="code">
-    <div class="card">
-      <h2>浏览器自动化脚本（刷学习任务）</h2>
-      <p>依赖 <code>ego-browser</code>（可换成 Playwright/Puppeteer），在已登录的页面里执行。</p>
-      <pre id="snippet-listrun"></pre>
-      <div class="row" style="margin-top:10px">
-        <button class="btn ghost" id="copyListRun">复制脚本</button>
-      </div>
-    </div>
-
-    <div class="card">
-      <h2>取 token 脚本（命令行版）</h2>
-      <p>不想用网页时，可以用它在本地把 code 换成 token。</p>
-      <pre id="snippet-fetch"></pre>
-      <div class="row" style="margin-top:10px">
-        <button class="btn ghost" id="copyFetch">复制脚本</button>
-      </div>
-    </div>
-
-    <div class="card">
-      <h2>答题策略</h2>
-      <ul>
-        <li>考哪个词：<code>.cjw-font-underline-subject</code> 或听力题的隐藏元素</li>
-        <li>句意：<code>.cjw-topic-remark</code>（<code>display:none</code> 但 DOM 存在）</li>
-        <li>词义：调 <code>/student/api/Student/Course/SearchWord</code></li>
-        <li>打分：词义重合度 × 2.0 + 译文重合度 × 1.2，选最高</li>
-        <li>答错记入黑名单，同一题不重复踩坑</li>
-      </ul>
-    </div>
-  </section>
-
-  <section id="faq">
-    <div class="card"><h2>报错「微信服务异常」</h2><p>code 已失效或被用过。重新授权一次即可，注意复制链接后不要再粘第二次。</p></div>
-    <div class="card"><h2>报错「信封字段不全」</h2><p>握手字段位置不对。新版已修复：握手参数在 <code>data.handshake</code> 里，不在顶层。</p></div>
-    <div class="card"><h2>页面被缓存，改了没生效</h2><p>地址后加 <code>?v=版本号</code> 强制刷新。</p></div>
-    <div class="card"><h2>token 多久过期？</h2><p>实测数小时内有效，但服务端随时可能失效。失效就重新走一次授权。</p></div>
-    <div class="card"><h2>能在 Windows 上用吗？</h2><p>换 token 可以（Chrome/Edge/Firefox 都支持 WebCrypto）；授权必须在手机微信里。</p></div>
-    <div class="card"><h2>为什么 404 后不能自动跳回来？</h2><p>404 页在别人域名下，没有 JS，我们改不了；微信又把回调域锁死在自己的域名上。只能手动复制。</p></div>
-  </section>
+  <div class="card qr">
+    <img alt="扫码打开" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUAAAAFAAQMAAAD3XjfpAAAABlBMVEX///8AAABVwtN+AAAACXBIWXMAAA7EAAAOxAGVKw4bAAAB/0lEQVRoge2aTY7CMAyFjVh02SP0KD1aezSOwhG6ZIHw5Pkn7YiZHUqD9CwBwv3Szasd26kI7TOmaSv+Tarl++Ke7VovEjwBvJlAV12np+h9gPslMr5kKaCtloHgKeDoaq3iisn8EJcRzqIpVhP8CtAjUEzrecsHgOD5IC5ND4TlxT7/a02wM1BSViTS2POq034JngKm5RZX8mORMLa4NIIdg+82W5VSrm5/XibYCHSJUi3Uj7cBW9xF1/Epy/2qSJoEOwaLtIfGLLc4C8vRQzMSKcHGoKdCk6+oBR9WwoktDnteRiHBXkHky2VzrWOLE0ukeABwhxquBJuCdcjhEh6asyUatCojwT7BqPbDpzH1yGSqekikBNuCUCwljOLDm7PFoF1Cgp2Ce6mo3l97c5biwxGJlGBjMGe7deqBSJxrY3YsQAh2CUapWAzV/pRjxZg1qsY4hOAJ4EGpkPG1Tz8yNAn2DEJrG3K45Iex4v4AEDwJrLPd+xBlo0YvDQlVlWDH4G5TbaXzVQ53EjwHTMnitDlmUrodjyrtPgS7BW/248eXUZBklSKeSOV3lUKwFVhf5XhG0EVlv5iyyI+5xRHsHQwINgfkheX7azsEm4I5+dA4TbHKvq4m2C9o4kYUms6P/T0pWG0BCLYF00xCGFbarDHu8F6lEOwKpH3CfgC4EYl6ubFavQAAAABJRU5ErkJggg==">
+    <p>手机扫码打开</p>
+  </div>
 
   <footer>
     <p class="disclaimer">本页面仅供交流学习使用，请勿用于违反平台服务条款的行为。<br>使用本工具产生的一切后果由使用者自行承担。</p>
-    <p>纯前端 · 数据不离开设备 · 单文件版 v1</p>
+    <p>纯前端 · 数据不离开设备 · v7</p>
   </footer>
 </div>
-
-<script type="text/plain" id="src-http">curl -X POST "https://app.vocabgo.com/student/api/Student/Main" \
-  -H "Content-Type: application/json" \
-  -H "UserToken: 你的token" \
-  -d '{"app_type":1,"version":"2.7.0.261109_01","timestamp":1700000000000,"sign":"..."}'</script>
-
-<script type="text/plain" id="src-flow">微信授权
-   ↓ 回调到 app.vocabgo.com/student/_cb?code=xxx
-404 页面（无 JS，code 不会被消费）
-   ↓ 手动复制链接
-本页面：提取 code
-   ↓ ECDH 生成客户端密钥 → 请求登录接口
-   ↓ 用服务端公钥协商出 AES 密钥 → 解密响应
-token（32 位十六进制）
-   ↓ 放进请求头 UserToken
-调用词达人接口</script>
-
-<script type="text/plain" id="src-oauth">https://open.weixin.qq.com/connect/oauth2/authorize
-  ?appid=wx2a694105a6abbe6d
-  &redirect_uri=https://app.vocabgo.com/student/_cb
-  &response_type=code
-  &scope=snsapi_userinfo
-  &state=1
-  &connect_redirect=1#wechat_redirect</script>
-
-<script type="text/plain" id="src-404">原本：https://app.vocabgo.com/student/?authorize=2   ← 会加载前端，code 被秒用
-改成：https://app.vocabgo.com/student/_cb              ← 404 静态页，code 安全</script>
-
-<script type="text/plain" id="src-crypto">① 客户端生成 ECDH P-256 密钥对
-   cpub_k = base64(SPKI 公钥)
-   cpub_v = "v1"
-
-② POST /Auth/Wechat/V2/LoginByWechatCode
-   body: {code, cpub_k, cpub_v, timestamp, version, app_type, sign}
-
-③ 服务端返回：spub_k（服务端公钥）+ salt + 密文
-
-④ 协商密钥
-   shared = ECDH(服务端公钥, 客户端私钥)              → 256 bit
-   aesKey = HKDF-SHA256(shared, salt, "vcg-auth-aes") → 256 bit
-
-⑤ 解密
-   plaintext = AES-GCM(aesKey, iv, aad, cipher_text)</script>
-
-<script type="text/plain" id="src-envelope">{
-  "code": 1,
-  "data": {
-    "handshake_required": true,
-    "handshake": {
-      "spub_k": "服务端公钥(base64)",
-      "salt": "HKDF 盐(base64)",
-      "version": "v1"
-    },
-    "encrypted": true,
-    "payload": {
-      "iv": "base64",
-      "cipher_text": "base64",
-      "aad": "vcg-auth:POST:/Wechat/V2/LoginByWechatCode"
-    }
-  }
-}</script>
-
-<script type="text/plain" id="src-sign">参数按键名升序排列 → "k1=v1&k2=v2..."
-拼接盐值 → md5(排序串 + "ajfajfamsnfaflfasakljdlalkflak")
-
-示例（Python）：
-import hashlib
-SALT = "ajfajfamsnfaflfasakljdlalkflak"
-
-def sign(p):
-    s = "&".join(f"{k}={p[k]}" for k in sorted(p) if p[k] not in (None, ""))
-    return hashlib.md5((s + SALT).encode()).hexdigest()</script>
-
-<script type="text/plain" id="src-cors">$ curl -I -X OPTIONS https://app.vocabgo.com/student/api/... \
-    -H "Origin: https://your-site.pages.dev"
-
-access-control-allow-origin: https://your-site.pages.dev
-access-control-allow-headers: *
-access-control-allow-credentials: true</script>
-
-<script type="text/plain" id="src-listrun">// 词达人：把某个 list 刷到 100%（UI 驱动）
-// 用法：ego-browser nodejs < vocabgo_list_run.js（DICT 由外部注入）
-
-const DICT = __DICT__;
-const MAX_ROUNDS = 12;      // 最多练习轮数
-const MAX_STEPS = 90;       // 每轮最多操作步数
-
-const task = await taskSpace("vocabgo-ui");
-const tabs = await task.tabs();
-const page = task.page(tabs[tabs.length - 1].label);
-
-const log = (s) => console.log(s);
-const cn = (s) => (s || "").replace(/[^\u4e00-\u9fa5]/g, "");
-
-function overlap(a, b) {
-  const A = cn(a), B = cn(b);
-  if (!A || !B) return 0;
-  let hit = 0;
-  for (const ch of new Set(A)) if (B.includes(ch)) hit++;
-  return hit / Math.max(1, new Set(A).size);
-}
-
-function lemmas(w) {
-  const s = (w || "").toLowerCase().replace(/[^a-z]/g, "");
-  const out = new Set([s]);
-  for (const suf of ["ed", "ing", "es", "s", "d"]) {
-    if (s.endsWith(suf) && s.length > suf.length + 2) out.add(s.slice(0, -suf.length));
-  }
-  if (s.endsWith("ies")) out.add(s.slice(0, -3) + "y");
-  return [...out];
-}
-
-function scoreOption(optText, word, remark) {
-  const key = lemmas(word).find((l) => DICT[l]) || null;
-  const meaning = key ? DICT[key] : "";
-  return (meaning ? overlap(meaning, optText) * 2.0 : 0) + overlap(optText, remark) * 1.2;
-}
-
-// 当前是否在选择单词页
-async function onSelectPage() {
-  return await page.evaluate(() => !!document.querySelector(".cjw-word-li") || /\u9009\u62e9\u5355\u8bcd/.test(document.body.innerText));
-}
-
-// 读取选择页的词与得分
-async function readWords() {
-  return await page.evaluate(() => {
-    return [...document.querySelectorAll(".cjw-word-li")].map((el) => {
-      const txt = (el.innerText || "").trim().split("\n");
-      const word = (txt[0] || "").trim();
-      const score = parseFloat(txt[1] || "0") || 0;
-      return { word, score };
-    }).filter((w) => /^[a-z]/i.test(w.word));
-  });
-}
-
-// 选中若干词
-async function selectWords(names) {
-  return await page.evaluate((list) => {
-    let n = 0;
-    const els = [...document.querySelectorAll(".cjw-word-li")];
-    for (const name of list) {
-      const el = els.find((e) => ((e.innerText || "").trim().split("\n")[0] || "") === name);
-      if (el) { el.click(); n++; }
-    }
-    return n;
-  }, names);
-}
-
-async function clickStart() {
-  return await page.evaluate(() => {
-    const b = [...document.querySelectorAll("button")].find((x) => (x.innerText || "").trim() === "开始练习");
-    if (!b || b.disabled) return false;
-    b.click();
-    return true;
-  });
-}
-
-async function clickContinue() {
-  return await page.evaluate(() => {
-    const b = [...document.querySelectorAll("button")].find((x) => ["继续", "下一题", "确认", "确定"].includes((x.innerText || "").trim()) && x.getBoundingClientRect().width > 0 && !x.disabled);
-    if (!b) return false;
-    b.click();
-    return true;
-  });
-}
-
-async function readQuestion() {
-  return await page.evaluate(() => {
-    const wordEl = document.querySelector(".cjw-font-underline-subject")
-      || [...document.querySelectorAll(".topic-stem-listening p.c-color-subject")].find((p) => (p.textContent || "").trim());
-    const remarkEl = document.querySelector(".cjw-topic-remark");
-    const opts = [...document.querySelectorAll(".cjw-option")].map((o, i) => ({ i, text: (o.innerText || "").trim() }));
-    const isCard = [...document.querySelectorAll("button")].some((b) => (b.innerText || "").trim() === "继续")
-      && document.querySelectorAll(".cjw-option").length === 0;
-    return {
-      word: wordEl ? wordEl.textContent.trim() : null,
-      remark: remarkEl ? remarkEl.textContent.trim() : "",
-      opts, isCard,
-    };
-  });
-}
-
-async function pick(i) {
-  await page.evaluate((idx) => {
-    const el = [...document.querySelectorAll(".cjw-option")][idx];
-    if (!el) return;
-    el.scrollIntoView({ block: "center" });
-    const r = el.getBoundingClientRect();
-    const cx = r.x + r.width / 2, cy = r.y + r.height / 2;
-    ["mousedown", "mouseup", "click"].forEach((t) =>
-      el.dispatchEvent(new MouseEvent(t, { bubbles: true, cancelable: true, view: window, clientX: cx, clientY: cy })));
-  }, i);
-}
-
-const triedWrong = new Set();
-
-// ---------- 主流程 ----------
-for (let round = 1; round <= MAX_ROUNDS; round++) {
-  // 等待回到选择页
-  for (let w = 0; w < 20; w++) {
-    if (await onSelectPage()) break;
-    await page.waitForTimeout(1000);
-  }
-  if (!(await onSelectPage())) { log("未能回到选择页，停止"); break; }
-
-  let words = await readWords();
-  const pending = words.filter((w) => w.score < 5).map((w) => w.word);
-  log(`\n=== 第 ${round} 轮 === 词总数 ${words.length}，未满分的 ${pending.length}`);
-  if (!pending.length) { log("全部满分 🎉"); break; }
-
-  const batch = pending.slice(0, 10);
-  const n = await selectWords(batch);
-  log(`选中 ${n} 个：${batch.join(", ")}`);
-  await page.waitForTimeout(900);
-  if (!(await clickStart())) { log("开始练习按钮不可用，停止"); break; }
-  await page.waitForTimeout(2500);
-
-  // 练习内循环
-  let steps = 0;
-  while (steps++ < MAX_STEPS) {
-    if (await onSelectPage()) break;
-
-    const q = await readQuestion();
-    if (q.isCard || (!q.word && !q.opts.length)) {
-      if (!(await clickContinue())) break;
-      await page.waitForTimeout(1000);
-      continue;
-    }
-
-    if (q.opts.length >= 2 && q.word) {
-      const cand = q.opts
-        .filter((o) => !triedWrong.has(q.word + "|" + o.text))
-        .map((o) => ({ ...o, s: scoreOption(o.text, q.word, q.remark) }))
-        .sort((a, b) => b.s - a.s);
-      const best = cand[0] || q.opts[0];
-      await pick(best.i);
-      await page.waitForTimeout(650);
-      const cls = await page.evaluate((idx) => [...document.querySelectorAll(".cjw-option")][idx]?.className || "", best.i);
-      const right = /answers-right/.test(cls);
-      if (!right) triedWrong.add(q.word + "|" + best.text);
-      log(`  ${q.word.padEnd(12)} → ${right ? "✅" : "❌"} ${best.text.slice(0, 18)}`);
-      await clickContinue();
-      await page.waitForTimeout(1100);
-      continue;
-    }
-
-    // 其他情况：尝试继续
-    if (!(await clickContinue())) break;
-    await page.waitForTimeout(1000);
-  }
-  log(`  本轮结束（${steps} 步）`);
-  await page.waitForTimeout(2000);
-}
-
-const final = await readWords();
-log("\n最终得分：" + final.map((w) => `${w.word}:${w.score}`).join(" "));
-</script>
-
-<script type="text/plain" id="src-fetch">// 用 ego-browser 打开带 code 的授权链接，让词达人 H5 自己换 token，然后读出 token
-// 用法：ego-browser nodejs vocabgo_fetch_token.js "<带 code 的链接>"
-
-import fs from "node:fs/promises";
-
-const OUT = "/Users/yangchenyi/Documents/deepseek-harness/default-workspace/tools/vocabgo_token.json";
-const arg = process.argv[2];
-if (!arg) {
-  console.log("用法: ego-browser nodejs vocabgo_fetch_token.js \"<带code的链接>\"");
-  process.exit(2);
-}
-
-// 统一成「query 在 hash 前面」的形态（实测只有这种形态会触发登录）
-function normalize(raw) {
-  const u = new URL(raw);
-  const hash = u.hash || "#/student/home";
-  let code = u.searchParams.get("code");
-  let state = u.searchParams.get("state") || "1";
-  if (!code) {
-    const m = hash.match(/[?&]code=([^&#\s]+)/);
-    if (m) code = decodeURIComponent(m[1]);
-    const s = hash.match(/[?&]state=([^&#\s]+)/);
-    if (s) state = decodeURIComponent(s[1]);
-  }
-  if (!code) throw new Error("链接里没有 code");
-  return `https://app.vocabgo.com/student/?authorize=2&code=${encodeURIComponent(code)}&state=${encodeURIComponent(state)}${hash}`;
-}
-
-const target = normalize(arg);
-console.log("① 规范化链接:", target.slice(0, 110) + "…");
-
-const task = await taskSpace("vocabgo-exchange");
-const page = await task.newPage();
-try { await page.goto(target); } catch (e) { console.log("goto:", String(e.message).slice(0, 60)); }
-await page.waitForTimeout(9000);
-
-const data = await page.evaluate(() => {
-  const get = (k) => localStorage.getItem(k);
-  let keys = [];
-  try { for (let i = 0; i < localStorage.length; i++) keys.push(localStorage.key(i)); } catch (e) {}
-  return {
-    token: get("CDR_USER_TOKEN"),
-    session: get("CDR_USER_SESSION"),
-    loginInfo: get("CDR_LOGIN_INFO"),
-    home: get("S_HOME"),
-    keys,
-    url: location.href.slice(0, 100),
-    bodyLen: document.body.innerText.length,
-  };
-});
-
-if (!data.token) {
-  console.log("② 没拿到 token");
-  console.log("   localStorage 键:", JSON.stringify(data.keys));
-  console.log("   当前 URL:", data.url, "| 页面文字长度:", data.bodyLen);
-  console.log("   可能原因：code 已失效/已被用掉，或链接形态不对");
-  process.exit(1);
-}
-
-await fs.writeFile(OUT, JSON.stringify({
-  token: data.token,
-  session: data.session,
-  login_info: data.loginInfo,
-  saved_at: new Date().toISOString(),
-}, null, 2), "utf8");
-
-let nick = "";
-try {
-  const home = JSON.parse(data.home || "{}");
-  nick = home?.user_info?.student_name || home?.user_info?.nick_name || "";
-} catch (e) {}
-
-console.log("② ✅ 拿到 token");
-console.log("   token:", data.token.slice(0, 32) + "…", "（长度 " + data.token.length + "）");
-console.log("   用户:", nick || "(未解析到姓名)");
-console.log("   已保存:", OUT);
-</script>
 
 <script>
 (function () {
@@ -848,51 +380,6 @@ console.log("   已保存:", OUT);
       out.textContent = "查询失败：" + e.message;
     }
   });
-})();
-</script>
-
-<script>
-(function () {
-  "use strict";
-  var tabs = document.querySelectorAll("nav button");
-  tabs.forEach(function (b) {
-    b.addEventListener("click", function () {
-      tabs.forEach(function (x) { x.classList.remove("on"); });
-      b.classList.add("on");
-      document.querySelectorAll("section").forEach(function (s) { s.classList.remove("on"); });
-      var el = document.getElementById(b.dataset.tab);
-      if (el) el.classList.add("on");
-      window.scrollTo(0, 0);
-    });
-  });
-  var map = {
-    "snippet-http": "src-http", "snippet-flow": "src-flow", "snippet-oauth": "src-oauth",
-    "snippet-404": "src-404", "snippet-crypto": "src-crypto", "snippet-envelope": "src-envelope",
-    "snippet-sign": "src-sign", "snippet-cors": "src-cors",
-    "snippet-listrun": "src-listrun", "snippet-fetch": "src-fetch"
-  };
-  Object.keys(map).forEach(function (target) {
-    var src = document.getElementById(map[target]);
-    var dst = document.getElementById(target);
-    if (src && dst) dst.textContent = src.textContent.trim();
-  });
-  function bindCopy(btnId, srcId) {
-    var b = document.getElementById(btnId);
-    if (!b) return;
-    b.addEventListener("click", function () {
-      var text = document.getElementById(srcId).textContent;
-      var ta = document.createElement("textarea");
-      ta.value = text; ta.style.position = "fixed"; ta.style.opacity = "0";
-      document.body.appendChild(ta); ta.select();
-      try { document.execCommand("copy"); } catch (e) {}
-      document.body.removeChild(ta);
-      var old = b.textContent;
-      b.textContent = "已复制 ✓";
-      setTimeout(function () { b.textContent = old; }, 1500);
-    });
-  }
-  bindCopy("copyListRun", "src-listrun");
-  bindCopy("copyFetch", "src-fetch");
 })();
 </script>
 </body>
