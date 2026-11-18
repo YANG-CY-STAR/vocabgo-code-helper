@@ -3,108 +3,84 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>词达人 · 取 token 助手</title>
+<title>词达人 Token</title>
 <style>
-  :root{--bg:#f6f3ec;--card:#fff;--ink:#1f1c16;--sub:#7a7264;--line:#e7e0d3;--accent:#c8522f;--accent2:#1f6f4a;--warn:#b45309}
+  :root{
+    --bg:#0f1115; --card:#171a21; --line:#252a35; --ink:#e8eaf0; --sub:#8b93a7;
+    --accent:#e8563f; --ok:#3ecf8e; --warn:#e0a83a;
+  }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-  body{margin:0;padding:20px 16px 40px;background:var(--bg);color:var(--ink);
-       font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue",sans-serif;line-height:1.65;font-size:16px}
-  .wrap{max-width:560px;margin:0 auto}
-  h1{font-size:22px;margin:0 0 6px}
-  .sub{color:var(--sub);font-size:13.5px;margin:0 0 20px}
-  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin:0 0 14px;box-shadow:0 1px 2px rgba(0,0,0,.03)}
-  .step{display:flex;gap:10px;align-items:flex-start;margin:0 0 14px}
-  .step:last-child{margin-bottom:0}
-  .num{flex:0 0 24px;height:24px;border-radius:50%;background:var(--ink);color:#fff;font-size:13px;display:flex;align-items:center;justify-content:center;margin-top:2px}
-  .step h3{margin:0 0 2px;font-size:15.5px;font-weight:600}
-  .step p{margin:0;color:var(--sub);font-size:14px}
-  .btn{display:block;width:100%;padding:15px;border:0;border-radius:12px;font-size:16.5px;font-weight:600;color:#fff;background:var(--accent);cursor:pointer;margin:4px 0 0;font-family:inherit}
-  .btn:active{opacity:.85}
-  .btn:disabled{opacity:.5}
-  .btn.ghost{background:transparent;color:var(--accent);border:1.5px solid var(--accent)}
-  textarea{width:100%;min-height:84px;padding:12px;border:1.5px solid var(--line);border-radius:10px;font-size:14px;
-           font-family:ui-monospace,Menlo,monospace;resize:vertical;background:#fdfcf9;color:var(--ink)}
+  html,body{height:100%}
+  body{
+    margin:0;padding:24px 18px 32px;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue",sans-serif;
+    font-size:15px;line-height:1.55;display:flex;justify-content:center;
+  }
+  .wrap{width:100%;max-width:440px}
+  h1{font-size:17px;font-weight:600;margin:0 0 2px;letter-spacing:.3px}
+  .sub{color:var(--sub);font-size:12.5px;margin:0 0 22px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin:0 0 12px}
+  .card:last-of-type{margin-bottom:0}
+  .btn{
+    display:block;width:100%;padding:14px;border:0;border-radius:10px;font-size:15.5px;font-weight:600;
+    color:#fff;background:var(--accent);cursor:pointer;font-family:inherit;letter-spacing:.3px;
+    transition:opacity .15s;
+  }
+  .btn:active{opacity:.8}
+  .btn:disabled{opacity:.45;cursor:default}
+  .btn.sec{background:transparent;color:var(--ink);border:1px solid var(--line)}
+  textarea{
+    width:100%;min-height:72px;padding:11px;border:1px solid var(--line);border-radius:10px;
+    font-size:13px;font-family:ui-monospace,Menlo,monospace;resize:vertical;
+    background:#11141a;color:var(--ink);margin:0 0 10px;
+  }
+  textarea::placeholder{color:#4d5566}
   textarea:focus{outline:none;border-color:var(--accent)}
-  .hint{font-size:12.5px;color:var(--sub);margin:8px 0 0}
-  .out{font-family:ui-monospace,Menlo,monospace;font-size:14px;background:#f2efe8;padding:10px 12px;border-radius:8px;
-       word-break:break-all;display:none;margin:10px 0 0;white-space:pre-wrap}
-  .timer{display:none;margin:10px 0 0;font-size:13.5px;color:var(--warn);font-weight:600}
-  .ok{color:var(--accent2);font-weight:600}
-  .warn{background:#fff8ee;border-color:#f3d9b5}
-  .warn .num{background:var(--warn)}
-  footer{margin-top:22px;color:var(--sub);font-size:12.5px;text-align:center;line-height:1.7}
-  .tag{display:inline-block;font-size:12px;padding:2px 8px;border-radius:999px;background:#efe9dd;color:var(--sub);margin-left:6px;vertical-align:2px}
+  .out{
+    font-family:ui-monospace,Menlo,monospace;font-size:13px;background:#11141a;border:1px solid var(--line);
+    border-radius:10px;padding:11px;word-break:break-all;white-space:pre-wrap;display:none;margin:10px 0 0;line-height:1.6;
+  }
+  .out.ok{border-color:#1f5c42;color:var(--ok)}
+  .out.err{border-color:#5c2a22;color:#e88a7a}
+  .timer{display:none;margin:8px 0 0;font-size:12px;color:var(--warn)}
   .row{display:flex;gap:8px;margin-top:10px}
   .row .btn{margin:0}
+  .qr{text-align:center;margin-top:4px}
+  .qr img{width:150px;height:150px;border-radius:10px;background:#fff;padding:6px}
+  .qr p{color:var(--sub);font-size:12px;margin:6px 0 0}
+  footer{margin-top:20px;color:#4d5566;font-size:11.5px;text-align:center}
+  .notice{background:#1c1a14;border-color:#3d3520;color:var(--warn);font-size:12.5px;padding:10px 12px;display:none}
 </style>
 </head>
 <body>
 <div class="wrap">
 
-  <h1>词达人 · 取 token 助手</h1>
-  <p class="sub">授权一次 → 拿到链接 → 自动换取 token。全程在你的浏览器里完成，不经过任何第三方服务器。</p>
+  <h1>词达人 Token</h1>
+  <p class="sub">授权 → 复制跳转链接 → 换 token</p>
 
-  <div class="card" id="envTip" style="display:none;background:#eef6f0;border-color:#cfe5d6">
-    <div class="step" style="margin:0">
-      <div class="num" style="background:#1f6f4a">i</div>
-      <div>
-        <h3>检测到不在微信里</h3>
-        <p>第 1 步「开始授权」需要手机微信才能完成。<b>换 token 不受影响</b>：你可以让手机微信走完授权、复制链接，再到这里粘贴。</p>
-      </div>
-    </div>
-  </div>
+  <div class="card notice" id="envTip">请用手机微信打开本页完成授权；换 token 不限环境。</div>
 
-  <div class="card" id="qrCard">
-    <div class="step" style="margin-bottom:10px">
-      <div class="num">📱</div>
-      <div><h3>手机微信扫码打开本页</h3><p>在电脑上时，用微信扫这个码，直接在手机里完成授权。</p></div>
-    </div>
-    <div style="text-align:center">
-      <img alt="扫码打开" width="200" height="200" style="border:1px solid #e7e0d3;border-radius:10px;background:#fff"
-           src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUAAAAFAAQMAAAD3XjfpAAAABlBMVEX///8AAABVwtN+AAAACXBIWXMAAA7EAAAOxAGVKw4bAAAB/0lEQVRoge2aTY7CMAyFjVh02SP0KD1aezSOwhG6ZIHw5Pkn7YiZHUqD9CwBwv3Szasd26kI7TOmaSv+Tarl++Ke7VovEjwBvJlAV12np+h9gPslMr5kKaCtloHgKeDoaq3iisn8EJcRzqIpVhP8CtAjUEzrecsHgOD5IC5ND4TlxT7/a02wM1BSViTS2POq034JngKm5RZX8mORMLa4NIIdg+82W5VSrm5/XibYCHSJUi3Uj7cBW9xF1/Epy/2qSJoEOwaLtIfGLLc4C8vRQzMSKcHGoKdCk6+oBR9WwoktDnteRiHBXkHky2VzrWOLE0ukeABwhxquBJuCdcjhEh6asyUatCojwT7BqPbDpzH1yGSqekikBNuCUCwljOLDm7PFoF1Cgp2Ce6mo3l97c5biwxGJlGBjMGe7deqBSJxrY3YsQAh2CUapWAzV/pRjxZg1qsY4hOAJ4EGpkPG1Tz8yNAn2DEJrG3K45Iex4v4AEDwJrLPd+xBlo0YvDQlVlWDH4G5TbaXzVQ53EjwHTMnitDlmUrodjyrtPgS7BW/248eXUZBklSKeSOV3lUKwFVhf5XhG0EVlv5iyyI+5xRHsHQwINgfkheX7azsEm4I5+dA4TbHKvq4m2C9o4kYUms6P/T0pWG0BCLYF00xCGFbarDHu8F6lEOwKpH3CfgC4EYl6ubFavQAAAABJRU5ErkJggg==">
-    </div>
+  <div class="card">
+    <button class="btn" id="go">微信授权</button>
   </div>
 
   <div class="card">
-    <div class="step">
-      <div class="num">1</div>
-      <div><h3>开始授权</h3><p>跳转微信授权页，点「允许」。</p></div>
-    </div>
-    <button class="btn" id="go">开始授权 →</button>
-  </div>
-
-  <div class="card warn">
-    <div class="step">
-      <div class="num">2</div>
-      <div><h3>看到「404 Not Found」是正常的 <span class="tag">关键</span></h3>
-      <p>这个页面没有脚本，所以 code 不会被用掉，会留在网址里。</p></div>
-    </div>
-    <div class="step">
-      <div class="num">3</div>
-      <div><h3>点右上角 … → 复制链接</h3><p>不用开飞行模式、不用关微信。</p></div>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="step">
-      <div class="num">4</div>
-      <div><h3>粘贴链接，自动换 token</h3><p>页面会用 ECDH + AES-GCM 完成它的登录协议。</p></div>
-    </div>
-    <textarea id="paste" placeholder="粘贴刚才复制的链接，例如：&#10;https://app.vocabgo.com/student/_cb?code=071xxx&state=1"></textarea>
-    <button class="btn" id="exchange" style="margin-top:10px">提取 code 并换 token</button>
+    <textarea id="paste" placeholder="粘贴授权后的链接（含 code=）"></textarea>
+    <button class="btn" id="exchange">获取 Token</button>
     <div class="timer" id="timer"></div>
     <div class="out" id="out"></div>
     <div class="row" id="actions" style="display:none">
-      <button class="btn ghost" id="copyToken">复制 token</button>
-      <button class="btn ghost" id="checkUser">验证账号</button>
+      <button class="btn sec" id="copyToken">复制</button>
+      <button class="btn sec" id="checkUser">验证</button>
     </div>
-    <p class="hint" id="msg">code 只能用一次，有效期约 5 分钟。</p>
   </div>
 
-  <footer>
-    纯前端 · 不上传、不存储 · 数据只留在你的设备上<br>
-    <span id="buildVersion" style="font-size:11px;opacity:.6">构建 v3 · 2026-11-18</span>
-  </footer>
+  <div class="card qr">
+    <img alt="扫码打开" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUAAAAFAAQMAAAD3XjfpAAAABlBMVEX///8AAABVwtN+AAAACXBIWXMAAA7EAAAOxAGVKw4bAAAB/0lEQVRoge2aTY7CMAyFjVh02SP0KD1aezSOwhG6ZIHw5Pkn7YiZHUqD9CwBwv3Szasd26kI7TOmaSv+Tarl++Ke7VovEjwBvJlAV12np+h9gPslMr5kKaCtloHgKeDoaq3iisn8EJcRzqIpVhP8CtAjUEzrecsHgOD5IC5ND4TlxT7/a02wM1BSViTS2POq034JngKm5RZX8mORMLa4NIIdg+82W5VSrm5/XibYCHSJUi3Uj7cBW9xF1/Epy/2qSJoEOwaLtIfGLLc4C8vRQzMSKcHGoKdCk6+oBR9WwoktDnteRiHBXkHky2VzrWOLE0ukeABwhxquBJuCdcjhEh6asyUatCojwT7BqPbDpzH1yGSqekikBNuCUCwljOLDm7PFoF1Cgp2Ce6mo3l97c5biwxGJlGBjMGe7deqBSJxrY3YsQAh2CUapWAzV/pRjxZg1qsY4hOAJ4EGpkPG1Tz8yNAn2DEJrG3K45Iex4v4AEDwJrLPd+xBlo0YvDQlVlWDH4G5TbaXzVQ53EjwHTMnitDlmUrodjyrtPgS7BW/248eXUZBklSKeSOV3lUKwFVhf5XhG0EVlv5iyyI+5xRHsHQwINgfkheX7azsEm4I5+dA4TbHKvq4m2C9o4kYUms6P/T0pWG0BCLYF00xCGFbarDHu8F6lEOwKpH3CfgC4EYl6ubFavQAAAABJRU5ErkJggg==">
+    <p>手机扫码打开</p>
+  </div>
+
+  <footer>纯前端 · 数据不离开设备 · v4</footer>
 </div>
 
 <script>
@@ -302,7 +278,8 @@
   }
 
   // ---------- UI ----------
-  var out = $("out"), timerEl = $("timer"), msgEl = $("msg"), actions = $("actions");
+  var out = $("out"), timerEl = $("timer"), actions = $("actions");
+  var msgEl = { textContent: "" };  // 旧版提示位，现已移除
   var currentToken = "", timerId = 0;
 
   if (!/MicroMessenger/i.test(navigator.userAgent || "")) {
@@ -322,9 +299,9 @@
     var left = seconds;
     timerEl.style.display = "block";
     (function tick() {
-      if (left <= 0) { timerEl.textContent = "⚠️ 已超 5 分钟，code 可能失效，请重新授权。"; return; }
+      if (left <= 0) { timerEl.textContent = "code 已超时"; return; }
       var m = Math.floor(left / 60), s2 = left % 60;
-      timerEl.textContent = "⏳ code 剩余约 " + m + " 分 " + (s2 < 10 ? "0" + s2 : s2) + " 秒有效";
+      timerEl.textContent = "约 " + m + ":" + (s2 < 10 ? "0" + s2 : s2) + " 内有效";
       left--; timerId = setTimeout(tick, 1000);
     })();
   }
@@ -333,27 +310,32 @@
     var code = extractCode($("paste").value);
     if (!code) {
       out.style.display = "block";
-      out.textContent = "没找到 code。请粘贴带 code= 的完整链接。";
+      out.className = "out err";
+      out.textContent = "没找到 code";
       actions.style.display = "none";
       return;
     }
     out.style.display = "block";
-    out.textContent = "⏳ 正在换取 token…";
+    out.className = "out";
+    out.textContent = "换取中…";
     $("exchange").disabled = true;
     startTimer(300);
     try {
       var payload = await exchange(code);
       var token = payload.token || payload.access_token || "";
       if (!token) {
-        out.textContent = "⚠️ 拿到响应但没有 token 字段：\n" + JSON.stringify(payload).slice(0, 600);
+        out.className = "out err";
+        out.textContent = "响应里没有 token 字段";
         return;
       }
       currentToken = token;
-      out.textContent = "✅ 换取成功\n\ntoken: " + token + "\n\n" + JSON.stringify(payload, null, 1).slice(0, 500);
+      out.className = "out ok";
+      out.textContent = token;
       actions.style.display = "flex";
       msgEl.textContent = "token 已就绪。点「验证账号」可以确认它属于谁。";
     } catch (e) {
-      out.textContent = "❌ 失败：" + (e && e.message ? e.message : e) + "\n\n常见原因：code 已过期或被用过，重新授权一次即可。";
+      out.className = "out err";
+      out.textContent = "失败：" + (e && e.message ? e.message : e) + "\ncode 可能已过期，重新授权一次。";
     } finally {
       $("exchange").disabled = false;
     }
@@ -373,13 +355,16 @@
 
   $("checkUser").addEventListener("click", async function () {
     if (!currentToken) return;
-    out.textContent = "⏳ 查询中…";
+    out.className = "out";
+    out.textContent = "查询中…";
     try {
       var r = await callApiWithToken(currentToken, "/Student/Main", {});
       var u = (r.data || {}).user_info || {};
-      out.textContent = "✅ 验证成功\n\n姓名：" + (u.student_name || "-") + "\n学号：" + (u.student_code || "-") + "\n昵称：" + (u.nick_name || "-") + "\n\n接口返回 code=" + r.code;
+      out.className = "out ok";
+      out.textContent = (u.student_name || "-") + "\n" + (u.student_code || "-") + "\n" + (u.nick_name || "-");
     } catch (e) {
-      out.textContent = "❌ 查询失败：" + e.message;
+      out.className = "out err";
+      out.textContent = "查询失败：" + e.message;
     }
   });
 })();
