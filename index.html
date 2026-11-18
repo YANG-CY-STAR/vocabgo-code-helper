@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>词达人 · 取 code 助手</title>
+<style>
+  :root{
+    --bg:#f6f3ec; --card:#fff; --ink:#1f1c16; --sub:#7a7264;
+    --line:#e7e0d3; --accent:#c8522f; --accent2:#1f6f4a; --warn:#b45309;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  body{
+    margin:0;padding:20px 16px 40px;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue",sans-serif;
+    line-height:1.65;font-size:16px;
+  }
+  .wrap{max-width:560px;margin:0 auto}
+  h1{font-size:22px;margin:0 0 6px;letter-spacing:.5px}
+  .sub{color:var(--sub);font-size:13.5px;margin:0 0 20px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin:0 0 14px;
+        box-shadow:0 1px 2px rgba(0,0,0,.03)}
+  .step{display:flex;gap:10px;align-items:flex-start;margin:0 0 14px}
+  .step:last-child{margin-bottom:0}
+  .num{flex:0 0 24px;height:24px;border-radius:50%;background:var(--ink);color:#fff;
+       font-size:13px;display:flex;align-items:center;justify-content:center;margin-top:2px}
+  .step h3{margin:0 0 2px;font-size:15.5px;font-weight:600}
+  .step p{margin:0;color:var(--sub);font-size:14px}
+  .btn{display:block;width:100%;padding:15px;border:0;border-radius:12px;font-size:16.5px;font-weight:600;
+       color:#fff;background:var(--accent);cursor:pointer;margin:4px 0 0;
+       font-family:inherit;letter-spacing:.5px}
+  .btn:active{opacity:.85}
+  .btn.ghost{background:transparent;color:var(--accent);border:1.5px solid var(--accent)}
+  textarea{width:100%;min-height:92px;padding:12px;border:1.5px solid var(--line);border-radius:10px;
+           font-size:14px;font-family:ui-monospace,Menlo,monospace;resize:vertical;background:#fdfcf9;color:var(--ink)}
+  textarea:focus{outline:none;border-color:var(--accent)}
+  .hint{font-size:12.5px;color:var(--sub);margin:8px 0 0}
+  .code{font-family:ui-monospace,Menlo,monospace;font-size:15px;background:#f2efe8;padding:10px 12px;
+        border-radius:8px;word-break:break-all;display:none;margin:10px 0 0}
+  .timer{display:none;margin:10px 0 0;font-size:13.5px;color:var(--warn);font-weight:600}
+  .ok{color:var(--accent2)}
+  .warn{background:#fff8ee;border-color:#f3d9b5}
+  .warn .num{background:var(--warn)}
+  footer{margin-top:22px;color:var(--sub);font-size:12.5px;text-align:center;line-height:1.7}
+  .tag{display:inline-block;font-size:12px;padding:2px 8px;border-radius:999px;background:#efe9dd;
+       color:var(--sub);margin-left:6px;vertical-align:2px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>词达人 · 取 code 助手</h1>
+  <p class="sub">授权一次，拿到 code，回电脑换 token。全程不经过任何第三方服务器。</p>
+
+  <div class="card">
+    <div class="step">
+      <div class="num">1</div>
+      <div>
+        <h3>点击开始授权</h3>
+        <p>会跳转到微信授权页，点「允许」即可。</p>
+      </div>
+    </div>
+    <button class="btn" id="go">开始授权 →</button>
+  </div>
+
+  <div class="card warn">
+    <div class="step">
+      <div class="num">2</div>
+      <div>
+        <h3>跳转瞬间：开飞行模式 <span class="tag">关键</span></h3>
+        <p>看到页面开始加载词达人首页时，立刻下拉控制中心打开飞行模式。这样页面加载不出来，code 就不会被用掉。</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="num">3</div>
+      <div>
+        <h3>复制链接</h3>
+        <p>点右上角 <b>…</b> → 复制链接。此时链接里应该带着 <code>code=</code>。</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="num">4</div>
+      <div>
+        <h3>杀掉微信再恢复网络</h3>
+        <p>上滑后台把微信彻底划掉，然后关闭飞行模式。否则页面会重新加载、把 code 用掉。</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="step">
+      <div class="num">5</div>
+      <div>
+        <h3>把链接粘到这里</h3>
+        <p>自动帮你把 code 提取出来，复制后发到电脑。</p>
+      </div>
+    </div>
+    <textarea id="paste" placeholder="粘贴刚才复制的链接，例如：&#10;https://app.vocabgo.com/student/?authorize=2&code=071xxx&state=1"></textarea>
+    <button class="btn ghost" id="parse" style="margin-top:10px">提取 code</button>
+    <div class="code" id="out"></div>
+    <button class="btn" id="copy" style="display:none;margin-top:10px">复制 code</button>
+    <div class="timer" id="timer"></div>
+    <p class="hint" id="msg">code 只能用一次，有效期约 5 分钟，提取后请尽快发到电脑。</p>
+  </div>
+
+  <div class="card">
+    <div class="step">
+      <div class="num">💻</div>
+      <div>
+        <h3>电脑端：一步换 token</h3>
+        <p>在 Mac 终端执行下面这行，把 code 换成 token（token 会存到本地文件）：</p>
+      </div>
+    </div>
+    <pre style="background:#f2efe8;padding:12px;border-radius:8px;font-size:12.5px;overflow:auto;margin:0;white-space:pre-wrap;word-break:break-all">ego-browser nodejs vocabgo_fetch_token.js "https://app.vocabgo.com/student/?authorize=2&amp;code=XXXX&amp;state=1#/student/home"</pre>
+    <p class="hint">脚本会用 Chromium 打开链接，让词达人 H5 自己完成 V2 加密换 token，然后从 localStorage 读出 <code>CDR_USER_TOKEN</code>。</p>
+  </div>
+
+  <footer>
+    code 会交给电脑上的本地脚本换成 token<br>
+    不经过任何第三方服务器 · 不上传、不保存
+  </footer>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  // 词达人官方 appid 与回调地址
+  var APPID = "wx2a694105a6abbe6d";
+  var REDIRECT = "https://app.vocabgo.com/student/?authorize=2";
+  var AUTH_URL = "https://open.weixin.qq.com/connect/oauth2/authorize"
+    + "?appid=" + APPID
+    + "&redirect_uri=" + encodeURIComponent(REDIRECT)
+    + "&response_type=code&scope=snsapi_userinfo&state=1"
+    + "&connect_redirect=1#wechat_redirect";
+
+  var goBtn = document.getElementById("go");
+  var pasteEl = document.getElementById("paste");
+  var parseBtn = document.getElementById("parse");
+  var outEl = document.getElementById("out");
+  var copyBtn = document.getElementById("copy");
+  var timerEl = document.getElementById("timer");
+  var msgEl = document.getElementById("msg");
+  var current = "";
+  var timerId = 0;
+
+  goBtn.addEventListener("click", function () {
+    // 在微信里直接跳；不在微信里给出提示
+    var inWechat = /MicroMessenger/i.test(navigator.userAgent || "");
+    if (!inWechat) {
+      msgEl.textContent = "当前不在微信里，跳过去会提示「请在微信客户端打开链接」。";
+    }
+    window.location.href = AUTH_URL;
+  });
+
+  function extractCode(text) {
+    text = (text || "").trim();
+    if (!text) return "";
+    var m = text.match(/[?&#]code=([^&#\s]+)/i);
+    if (m) return decodeURIComponent(m[1]);
+    if (/^[A-Za-z0-9_\-]{20,}$/.test(text)) return text;
+    return "";
+  }
+
+  function startTimer(seconds) {
+    clearInterval(timerId);
+    var left = seconds;
+    timerEl.style.display = "block";
+    function tick() {
+      if (left <= 0) {
+        timerEl.textContent = "⚠️ 已超过 5 分钟，code 很可能已失效，请重新授权。";
+        clearInterval(timerId);
+        return;
+      }
+      var m = Math.floor(left / 60);
+      var s = left % 60;
+      timerEl.textContent = "⏳ 剩余约 " + m + " 分 " + (s < 10 ? "0" + s : s) + " 秒内有效";
+      left--;
+    }
+    tick();
+    timerId = setInterval(tick, 1000);
+  }
+
+  parseBtn.addEventListener("click", function () {
+    var code = extractCode(pasteEl.value);
+    if (!code) {
+      outEl.style.display = "block";
+      outEl.textContent = "没找到 code。请确认复制的是授权后跳转的完整链接，且带有 code= 参数。";
+      copyBtn.style.display = "none";
+      timerEl.style.display = "none";
+      return;
+    }
+    current = code;
+    outEl.style.display = "block";
+    outEl.innerHTML = '<span class="ok">✅ 已提取 code：</span><br>' + code;
+    copyBtn.style.display = "block";
+    startTimer(300);
+  });
+
+  copyBtn.addEventListener("click", function () {
+    if (!current) return;
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(current).then(function () {
+        copyBtn.textContent = "已复制 ✓";
+        setTimeout(function () { copyBtn.textContent = "复制 code"; }, 1600);
+      }).catch(fallback);
+    } else {
+      fallback();
+    }
+    function fallback() {
+      var ta = document.createElement("textarea");
+      ta.value = current;
+      ta.style.position = "fixed";
+      ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand("copy"); } catch (e) {}
+      document.body.removeChild(ta);
+      copyBtn.textContent = "已复制 ✓";
+      setTimeout(function () { copyBtn.textContent = "复制 code"; }, 1600);
+    }
+  });
+})();
+</script>
+</body>
+</html>
