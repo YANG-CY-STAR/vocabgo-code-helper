@@ -255,10 +255,14 @@
     // 3. 解析信封
     var data = json.data || {};
     var env = (data.encrypted && data.payload) ? data.payload : data;
-    var serverPub = data.spub_k || data.serverPublicKey || env.spub_k;
-    var salt = data.salt || env.salt;
+    // 握手信息在 data.handshake 里（服务端首次下发），也可能平铺在顶层
+    var hs = data.handshake || env.handshake || {};
+    var serverPub = hs.spub_k || hs.serverPublicKey || data.spub_k || data.serverPublicKey || env.spub_k;
+    var salt = hs.salt || data.salt || env.salt;
     if (!serverPub || !salt || !env.iv || !env.cipher_text) {
-      throw new Error("信封字段不全：" + JSON.stringify(Object.keys(data)));
+      throw new Error("信封字段不全：keys=" + JSON.stringify(Object.keys(data)) +
+        " handshake=" + JSON.stringify(Object.keys(hs)) +
+        " payload=" + JSON.stringify(Object.keys(env)));
     }
 
     // 4. ECDH -> HKDF -> AES-GCM 解密
