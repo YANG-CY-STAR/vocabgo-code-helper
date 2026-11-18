@@ -49,6 +49,10 @@
   .qr img{width:150px;height:150px;border-radius:10px;background:#fff;padding:6px;border:1px solid var(--line)}
   .qr p{color:var(--sub);font-size:12px;margin:6px 0 0}
   footer{margin-top:20px;color:#a3a8b4;font-size:11.5px;text-align:center}
+  .tip{margin:10px 0 0;color:var(--sub);font-size:12.5px;display:flex;gap:6px;align-items:flex-start}
+  .tip b{color:var(--ink);font-weight:600}
+  .tip .dot{flex:0 0 16px;height:16px;border-radius:50%;background:#fff3e8;color:#b45309;
+            font-size:11px;display:flex;align-items:center;justify-content:center;margin-top:2px}
   .notice{background:#fff9ea;border-color:#f2e2bd;color:var(--warn);font-size:12.5px;padding:10px 12px;display:none}
 </style>
 </head>
@@ -62,6 +66,10 @@
 
   <div class="card">
     <button class="btn" id="go">微信授权</button>
+    <div class="tip">
+      <span class="dot">!</span>
+      <span>跳转后显示 <b>404 Not Found 属正常</b>，此时点右上角 <b>…</b> → 复制链接</span>
+    </div>
   </div>
 
   <div class="card">
@@ -80,7 +88,7 @@
     <p>手机扫码打开</p>
   </div>
 
-  <footer>纯前端 · 数据不离开设备 · v5</footer>
+  <footer>纯前端 · 数据不离开设备 · v6</footer>
 </div>
 
 <script>
