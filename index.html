@@ -3,97 +3,60 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>词达人 Token</title>
+<title>Code 提取</title>
 <style>
-  :root{
-    --bg:#f6f6f8; --card:#ffffff; --line:#e6e7eb; --ink:#17181c; --sub:#6f7686;
-    --accent:#d9482f; --ok:#1a7f4b; --warn:#9a6a12;
-  }
+  :root{--bg:#f6f6f8;--card:#fff;--line:#e6e7eb;--ink:#17181c;--sub:#6f7686;--accent:#d9482f;--ok:#1a7f4b;--warn:#9a6a12}
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-  html,body{height:100%}
-  body{
-    margin:0;padding:24px 18px 32px;background:var(--bg);color:var(--ink);
-    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue",sans-serif;
-    font-size:15px;line-height:1.55;display:flex;justify-content:center;
-  }
+  body{margin:0;padding:24px 16px 40px;background:var(--bg);color:var(--ink);
+       font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue",sans-serif;
+       line-height:1.6;font-size:15px;display:flex;justify-content:center}
   .wrap{width:100%;max-width:440px}
-  h1{font-size:17px;font-weight:600;margin:0 0 2px;letter-spacing:.3px}
-  .sub{color:var(--sub);font-size:12.5px;margin:0 0 22px}
+  h1{font-size:18px;font-weight:600;margin:0 0 18px}
   .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin:0 0 12px}
-  .card:last-of-type{margin-bottom:0}
-  .btn{
-    display:block;width:100%;padding:14px;border:0;border-radius:10px;font-size:15.5px;font-weight:600;
-    color:#fff;background:var(--accent);cursor:pointer;font-family:inherit;letter-spacing:.3px;
-    transition:opacity .15s;
-  }
-  .btn:active{opacity:.8}
-  .btn:disabled{opacity:.45;cursor:default}
-  .btn.sec{background:transparent;color:var(--ink);border:1px solid var(--line)}
-  textarea{
-    width:100%;min-height:72px;padding:11px;border:1px solid var(--line);border-radius:10px;
-    font-size:13px;font-family:ui-monospace,Menlo,monospace;resize:vertical;
-    background:#fbfbfc;color:var(--ink);margin:0 0 10px;
-  }
+  .btn{display:block;width:100%;padding:14px;border:0;border-radius:10px;font-size:15.5px;font-weight:600;
+       color:#fff;background:var(--accent);cursor:pointer;font-family:inherit;letter-spacing:.3px}
+  .btn:active{opacity:.85}
+  .btn.ghost{background:#fff;color:var(--ink);border:1px solid var(--line)}
+  textarea{width:100%;min-height:76px;padding:11px;border:1px solid var(--line);border-radius:10px;
+           font-size:13px;font-family:ui-monospace,Menlo,monospace;background:#fbfbfc;color:var(--ink);
+           resize:vertical;margin:0 0 10px}
   textarea::placeholder{color:#a3a8b4}
   textarea:focus{outline:none;border-color:var(--accent)}
-  .out{
-    font-family:ui-monospace,Menlo,monospace;font-size:13px;background:#fbfbfc;border:1px solid var(--line);
-    border-radius:10px;padding:11px;word-break:break-all;white-space:pre-wrap;display:none;margin:10px 0 0;line-height:1.6;
-  }
+  .tip{margin:10px 0 0;color:var(--sub);font-size:12.5px;display:flex;gap:6px;align-items:flex-start}
+  .tip .dot{flex:0 0 16px;height:16px;border-radius:50%;background:#fff3e8;color:#b45309;font-size:11px;
+            display:flex;align-items:center;justify-content:center;margin-top:2px}
+  .out{font-family:ui-monospace,Menlo,monospace;font-size:14px;background:#fbfbfc;border:1px solid var(--line);
+       border-radius:10px;padding:11px;word-break:break-all;white-space:pre-wrap;display:none;margin:10px 0 0}
   .out.ok{border-color:#bfe3cf;background:#f2faf5;color:var(--ok)}
   .out.err{border-color:#f0cfc8;background:#fdf4f2;color:#b23c22}
-  .timer{display:none;margin:8px 0 0;font-size:12px;color:var(--warn)}
   .row{display:flex;gap:8px;margin-top:10px}
   .row .btn{margin:0}
-  .qr{text-align:center;margin-top:4px}
-  .qr img{width:150px;height:150px;border-radius:10px;background:#fff;padding:6px;border:1px solid var(--line)}
-  .qr p{color:var(--sub);font-size:12px;margin:6px 0 0}
-  footer{margin-top:20px;color:#a3a8b4;font-size:11.5px;text-align:center;line-height:1.7}
-  footer p{margin:0 0 6px}
-  .disclaimer{color:#9aa0ad;background:#f1f2f5;border-radius:8px;padding:9px 10px;font-size:11px;line-height:1.65}
-  .tip{margin:10px 0 0;color:var(--sub);font-size:12.5px;display:flex;gap:6px;align-items:flex-start}
-  .tip b{color:var(--ink);font-weight:600}
-  .tip .dot{flex:0 0 16px;height:16px;border-radius:50%;background:#fff3e8;color:#b45309;
-            font-size:11px;display:flex;align-items:center;justify-content:center;margin-top:2px}
-  .notice{background:#fff9ea;border-color:#f2e2bd;color:var(--warn);font-size:12.5px;padding:10px 12px;display:none}
+  .qr{text-align:center}
+  .qr img{width:140px;height:140px;border-radius:10px;border:1px solid var(--line);padding:6px;background:#fff}
 </style>
 </head>
 <body>
 <div class="wrap">
 
-  <h1>词达人 Token</h1>
-  <p class="sub">授权 → 复制跳转链接 → 换 token</p>
-
-  <div class="card notice" id="envTip">请用手机微信打开本页完成授权；换 token 不限环境。</div>
+  <h1>Code 提取</h1>
 
   <div class="card">
     <button class="btn" id="go">微信授权</button>
     <div class="tip">
       <span class="dot">!</span>
-      <span>跳转后显示 <b>404 Not Found 属正常</b>，此时点右上角 <b>…</b> → 复制链接</span>
+      <span>显示 404 时点右上角 <b>…</b> 复制链接</span>
     </div>
   </div>
 
   <div class="card">
-    <textarea id="paste" placeholder="粘贴授权后的链接（含 code=）"></textarea>
-    <button class="btn" id="exchange">获取 Token</button>
-    <div class="timer" id="timer"></div>
+    <textarea id="paste" placeholder="粘贴链接"></textarea>
+    <button class="btn" id="extract">提取 Code</button>
     <div class="out" id="out"></div>
     <div class="row" id="actions" style="display:none">
-      <button class="btn sec" id="copyToken">复制</button>
-      <button class="btn sec" id="checkUser">验证</button>
+      <button class="btn ghost" id="copyCode">复制</button>
     </div>
   </div>
 
-  <div class="card qr">
-    <img alt="扫码打开" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUAAAAFAAQMAAAD3XjfpAAAABlBMVEX///8AAABVwtN+AAAACXBIWXMAAA7EAAAOxAGVKw4bAAAB/0lEQVRoge2aTY7CMAyFjVh02SP0KD1aezSOwhG6ZIHw5Pkn7YiZHUqD9CwBwv3Szasd26kI7TOmaSv+Tarl++Ke7VovEjwBvJlAV12np+h9gPslMr5kKaCtloHgKeDoaq3iisn8EJcRzqIpVhP8CtAjUEzrecsHgOD5IC5ND4TlxT7/a02wM1BSViTS2POq034JngKm5RZX8mORMLa4NIIdg+82W5VSrm5/XibYCHSJUi3Uj7cBW9xF1/Epy/2qSJoEOwaLtIfGLLc4C8vRQzMSKcHGoKdCk6+oBR9WwoktDnteRiHBXkHky2VzrWOLE0ukeABwhxquBJuCdcjhEh6asyUatCojwT7BqPbDpzH1yGSqekikBNuCUCwljOLDm7PFoF1Cgp2Ce6mo3l97c5biwxGJlGBjMGe7deqBSJxrY3YsQAh2CUapWAzV/pRjxZg1qsY4hOAJ4EGpkPG1Tz8yNAn2DEJrG3K45Iex4v4AEDwJrLPd+xBlo0YvDQlVlWDH4G5TbaXzVQ53EjwHTMnitDlmUrodjyrtPgS7BW/248eXUZBklSKeSOV3lUKwFVhf5XhG0EVlv5iyyI+5xRHsHQwINgfkheX7azsEm4I5+dA4TbHKvq4m2C9o4kYUms6P/T0pWG0BCLYF00xCGFbarDHu8F6lEOwKpH3CfgC4EYl6ubFavQAAAABJRU5ErkJggg==">
-    <p>手机扫码打开</p>
-  </div>
-
-  <footer>
-    <p class="disclaimer">本页面仅供交流学习使用，请勿用于违反平台服务条款的行为。<br>使用本工具产生的一切后果由使用者自行承担。</p>
-    <p>纯前端 · 数据不离开设备 · v7</p>
-  </footer>
 </div>
 
 <script>
@@ -106,106 +69,9 @@
     + "&redirect_uri=" + encodeURIComponent(REDIRECT)
     + "&response_type=code&scope=snsapi_userinfo&state=1&connect_redirect=1#wechat_redirect";
 
-  var API = "https://app.vocabgo.com/student/api";
-  var SALT = "ajfajfamsnfaflfasakljdlalkflak";
-  var VERSION = "2.7.0.261109_01";
-  var HKDF_INFO = "vcg-auth-aes";
-
   var $ = function (id) { return document.getElementById(id); };
+  var current = "";
 
-  // ---------- MD5（紧凑实现，公有领域算法）----------
-  var md5 = (function () {
-    function safeAdd(x, y) { var lsw = (x & 0xFFFF) + (y & 0xFFFF); var msw = (x >> 16) + (y >> 16) + (lsw >> 16); return (msw << 16) | (lsw & 0xFFFF); }
-    function bitRotateLeft(num, cnt) { return (num << cnt) | (num >>> (32 - cnt)); }
-    function md5cmn(q, a, b, x, s, t) { return safeAdd(bitRotateLeft(safeAdd(safeAdd(a, q), safeAdd(x, t)), s), b); }
-    function md5ff(a, b, c, d, x, s, t) { return md5cmn((b & c) | (~b & d), a, b, x, s, t); }
-    function md5gg(a, b, c, d, x, s, t) { return md5cmn((b & d) | (c & ~d), a, b, x, s, t); }
-    function md5hh(a, b, c, d, x, s, t) { return md5cmn(b ^ c ^ d, a, b, x, s, t); }
-    function md5ii(a, b, c, d, x, s, t) { return md5cmn(c ^ (b | ~d), a, b, x, s, t); }
-    function binlMD5(x, len) {
-      x[len >> 5] |= 0x80 << (len % 32);
-      x[(((len + 64) >>> 9) << 4) + 14] = len;
-      var a = 1732584193, b = -271733879, c = -1732584194, d = 271733878;
-      for (var i = 0; i < x.length; i += 16) {
-        var olda = a, oldb = b, oldc = c, oldd = d;
-        a = md5ff(a, b, c, d, x[i], 7, -680876936); d = md5ff(d, a, b, c, x[i + 1], 12, -389564586);
-        c = md5ff(c, d, a, b, x[i + 2], 17, 606105819); b = md5ff(b, c, d, a, x[i + 3], 22, -1044525330);
-        a = md5ff(a, b, c, d, x[i + 4], 7, -176418897); d = md5ff(d, a, b, c, x[i + 5], 12, 1200080426);
-        c = md5ff(c, d, a, b, x[i + 6], 17, -1473231341); b = md5ff(b, c, d, a, x[i + 7], 22, -45705983);
-        a = md5ff(a, b, c, d, x[i + 8], 7, 1770035416); d = md5ff(d, a, b, c, x[i + 9], 12, -1958414417);
-        c = md5ff(c, d, a, b, x[i + 10], 17, -42063); b = md5ff(b, c, d, a, x[i + 11], 22, -1990404162);
-        a = md5ff(a, b, c, d, x[i + 12], 7, 1804603682); d = md5ff(d, a, b, c, x[i + 13], 12, -40341101);
-        c = md5ff(c, d, a, b, x[i + 14], 17, -1502002290); b = md5ff(b, c, d, a, x[i + 15], 22, 1236535329);
-        a = md5gg(a, b, c, d, x[i + 1], 5, -165796510); d = md5gg(d, a, b, c, x[i + 6], 9, -1069501632);
-        c = md5gg(c, d, a, b, x[i + 11], 14, 643717713); b = md5gg(b, c, d, a, x[i], 20, -373897302);
-        a = md5gg(a, b, c, d, x[i + 5], 5, -701558691); d = md5gg(d, a, b, c, x[i + 10], 9, 38016083);
-        c = md5gg(c, d, a, b, x[i + 15], 14, -660478335); b = md5gg(b, c, d, a, x[i + 4], 20, -405537848);
-        a = md5gg(a, b, c, d, x[i + 9], 5, 568446438); d = md5gg(d, a, b, c, x[i + 14], 9, -1019803690);
-        c = md5gg(c, d, a, b, x[i + 3], 14, -187363961); b = md5gg(b, c, d, a, x[i + 8], 20, 1163531501);
-        a = md5gg(a, b, c, d, x[i + 13], 5, -1444681467); d = md5gg(d, a, b, c, x[i + 2], 9, -51403784);
-        c = md5gg(c, d, a, b, x[i + 7], 14, 1735328473); b = md5gg(b, c, d, a, x[i + 12], 20, -1926607734);
-        a = md5hh(a, b, c, d, x[i + 5], 4, -378558); d = md5hh(d, a, b, c, x[i + 8], 11, -2022574463);
-        c = md5hh(c, d, a, b, x[i + 11], 16, 1839030562); b = md5hh(b, c, d, a, x[i + 14], 23, -35309556);
-        a = md5hh(a, b, c, d, x[i + 1], 4, -1530992060); d = md5hh(d, a, b, c, x[i + 4], 11, 1272893353);
-        c = md5hh(c, d, a, b, x[i + 7], 16, -155497632); b = md5hh(b, c, d, a, x[i + 10], 23, -1094730640);
-        a = md5hh(a, b, c, d, x[i + 13], 4, 681279174); d = md5hh(d, a, b, c, x[i], 11, -358537222);
-        c = md5hh(c, d, a, b, x[i + 3], 16, -722521979); b = md5hh(b, c, d, a, x[i + 6], 23, 76029189);
-        a = md5hh(a, b, c, d, x[i + 9], 4, -640364487); d = md5hh(d, a, b, c, x[i + 12], 11, -421815835);
-        c = md5hh(c, d, a, b, x[i + 15], 16, 530742520); b = md5hh(b, c, d, a, x[i + 2], 23, -995338651);
-        a = md5ii(a, b, c, d, x[i], 6, -198630844); d = md5ii(d, a, b, c, x[i + 7], 10, 1126891415);
-        c = md5ii(c, d, a, b, x[i + 14], 15, -1416354905); b = md5ii(b, c, d, a, x[i + 5], 21, -57434055);
-        a = md5ii(a, b, c, d, x[i + 12], 6, 1700485571); d = md5ii(d, a, b, c, x[i + 3], 10, -1894986606);
-        c = md5ii(c, d, a, b, x[i + 10], 15, -1051523); b = md5ii(b, c, d, a, x[i + 1], 21, -2054922799);
-        a = md5ii(a, b, c, d, x[i + 8], 6, 1873313359); d = md5ii(d, a, b, c, x[i + 15], 10, -30611744);
-        c = md5ii(c, d, a, b, x[i + 6], 15, -1560198380); b = md5ii(b, c, d, a, x[i + 13], 21, 1309151649);
-        a = md5ii(a, b, c, d, x[i + 4], 6, -145523070); d = md5ii(d, a, b, c, x[i + 11], 10, -1120210379);
-        c = md5ii(c, d, a, b, x[i + 2], 15, 718787259); b = md5ii(b, c, d, a, x[i + 9], 21, -343485551);
-        a = safeAdd(a, olda); b = safeAdd(b, oldb); c = safeAdd(c, oldc); d = safeAdd(d, oldd);
-      }
-      return [a, b, c, d];
-    }
-    function binl2rstr(input) {
-      var output = "", length32 = input.length * 32;
-      for (var i = 0; i < length32; i += 8) output += String.fromCharCode((input[i >> 5] >>> (i % 32)) & 0xFF);
-      return output;
-    }
-    function rstr2binl(input) {
-      var output = [], i;
-      output[(input.length >> 2) - 1] = undefined;
-      for (i = 0; i < output.length; i += 1) output[i] = 0;
-      var length8 = input.length * 8;
-      for (i = 0; i < length8; i += 8) output[i >> 5] |= (input.charCodeAt(i / 8) & 0xFF) << (i % 32);
-      return output;
-    }
-    function rstrMD5(s) { return binl2rstr(binlMD5(rstr2binl(s), s.length * 8)); }
-    function rstr2hex(input) {
-      var hexTab = "0123456789abcdef", output = "", x, i;
-      for (i = 0; i < input.length; i += 1) { x = input.charCodeAt(i); output += hexTab.charAt((x >>> 4) & 0x0F) + hexTab.charAt(x & 0x0F); }
-      return output;
-    }
-    function str2rstrUTF8(input) { return unescape(encodeURIComponent(input)); }
-    return function (s) { return rstr2hex(rstrMD5(str2rstrUTF8(s))); };
-  })();
-
-  // ---------- 工具 ----------
-  function b64FromBuf(buf) {
-    var bytes = new Uint8Array(buf), bin = "";
-    for (var i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
-    return btoa(bin);
-  }
-  function bufFromB64(s) {
-    var bin = atob(s), out = new Uint8Array(bin.length);
-    for (var i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
-    return out;
-  }
-  function makeSign(obj) {
-    var keys = Object.keys(obj).filter(function (k) {
-      var v = obj[k];
-      return v !== undefined && v !== null && v !== "";
-    }).sort();
-    var raw = keys.map(function (k) { return k + "=" + obj[k]; }).join("&") + SALT;
-    return md5(raw);
-  }
   function extractCode(text) {
     text = (text || "").trim();
     if (!text) return "";
@@ -215,170 +81,40 @@
     return "";
   }
 
-  // ---------- 核心：用 code 换 token ----------
-  async function exchange(code) {
-    var subtle = window.crypto && window.crypto.subtle;
-    if (!subtle) throw new Error("当前环境不支持 WebCrypto（需要 https 或 localhost）");
-
-    // 1. 生成 ECDH 密钥
-    var kp = await subtle.generateKey({ name: "ECDH", namedCurve: "P-256" }, true, ["deriveBits"]);
-    var spki = await subtle.exportKey("spki", kp.publicKey);
-    var cpubK = b64FromBuf(spki);
-
-    // 2. 登录请求
-    var body = { code: code, cpub_k: cpubK, cpub_v: "v1", timestamp: Date.now(), version: VERSION, app_type: 1 };
-    body.sign = makeSign(body);
-
-    var resp = await fetch(API + "/Auth/Wechat/V2/LoginByWechatCode", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json;charset=UTF-8",
-        "X-Requested-With": "XMLHttpRequest",
-        "Referer": "https://app.vocabgo.com/student/",
-        "Origin": "https://app.vocabgo.com",
-      },
-      body: JSON.stringify(body),
-    });
-    var json = await resp.json();
-    if (json.code !== 1) throw new Error(json.msg || ("接口返回 code=" + json.code));
-
-    // 3. 解析信封
-    var data = json.data || {};
-    var env = (data.encrypted && data.payload) ? data.payload : data;
-    // 握手信息在 data.handshake 里（服务端首次下发），也可能平铺在顶层
-    var hs = data.handshake || env.handshake || {};
-    var serverPub = hs.spub_k || hs.serverPublicKey || data.spub_k || data.serverPublicKey || env.spub_k;
-    var salt = hs.salt || data.salt || env.salt;
-    if (!serverPub || !salt || !env.iv || !env.cipher_text) {
-      throw new Error("信封字段不全：keys=" + JSON.stringify(Object.keys(data)) +
-        " handshake=" + JSON.stringify(Object.keys(hs)) +
-        " payload=" + JSON.stringify(Object.keys(env)));
-    }
-
-    // 4. ECDH -> HKDF -> AES-GCM 解密
-    var serverKey = await subtle.importKey("spki", bufFromB64(serverPub), { name: "ECDH", namedCurve: "P-256" }, true, []);
-    var shared = await subtle.deriveBits({ name: "ECDH", public: serverKey }, kp.privateKey, 256);
-    var hkdfKey = await subtle.importKey("raw", shared, "HKDF", false, ["deriveBits"]);
-    var aesBits = await subtle.deriveBits(
-      { name: "HKDF", hash: "SHA-256", salt: bufFromB64(salt), info: new TextEncoder().encode(HKDF_INFO) },
-      hkdfKey, 256
-    );
-    var aesKey = await subtle.importKey("raw", aesBits, { name: "AES-GCM" }, false, ["decrypt"]);
-    var plainBuf = await subtle.decrypt(
-      { name: "AES-GCM", iv: bufFromB64(env.iv), additionalData: env.aad ? new TextEncoder().encode(env.aad) : undefined, tagLength: 128 },
-      aesKey, bufFromB64(env.cipher_text)
-    );
-    var text = new TextDecoder().decode(plainBuf);
-    var payload;
-    try { payload = JSON.parse(text); } catch (e) { payload = { raw: text }; }
-    return payload;
-  }
-
-  async function callApiWithToken(token, path, body) {
-    var b = Object.assign({}, body || {}, { timestamp: Date.now(), version: VERSION, app_type: 1 });
-    b.sign = makeSign(b);
-    var res = await fetch(API + path, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json;charset=UTF-8",
-        "X-Requested-With": "XMLHttpRequest",
-        "UserToken": token,
-        "Referer": "https://app.vocabgo.com/student/",
-      },
-      body: JSON.stringify(b),
-    });
-    return res.json();
-  }
-
-  // ---------- UI ----------
-  var out = $("out"), timerEl = $("timer"), actions = $("actions");
-  var msgEl = { textContent: "" };  // 旧版提示位，现已移除
-  var currentToken = "", timerId = 0;
-
-  if (!/MicroMessenger/i.test(navigator.userAgent || "")) {
-    var tip = $("envTip");
-    if (tip) tip.style.display = "block";
-  }
-
   $("go").addEventListener("click", function () {
-    if (!/MicroMessenger/i.test(navigator.userAgent || "")) {
-      msgEl.textContent = "提示：这条链接需要在微信里打开，否则微信会拒绝授权。";
-    }
     window.location.href = AUTH_URL;
   });
 
-  function startTimer(seconds) {
-    clearInterval(timerId);
-    var left = seconds;
-    timerEl.style.display = "block";
-    (function tick() {
-      if (left <= 0) { timerEl.textContent = "code 已超时"; return; }
-      var m = Math.floor(left / 60), s2 = left % 60;
-      timerEl.textContent = "约 " + m + ":" + (s2 < 10 ? "0" + s2 : s2) + " 内有效";
-      left--; timerId = setTimeout(tick, 1000);
-    })();
-  }
-
-  $("exchange").addEventListener("click", async function () {
+  $("extract").addEventListener("click", function () {
+    var out = $("out");
     var code = extractCode($("paste").value);
     if (!code) {
-      out.style.display = "block";
       out.className = "out err";
-      out.textContent = "没找到 code";
-      actions.style.display = "none";
+      out.style.display = "block";
+      out.textContent = "未找到 code";
+      $("actions").style.display = "none";
       return;
     }
+    current = code;
+    out.className = "out ok";
     out.style.display = "block";
-    out.className = "out";
-    out.textContent = "换取中…";
-    $("exchange").disabled = true;
-    startTimer(300);
-    try {
-      var payload = await exchange(code);
-      var token = payload.token || payload.access_token || "";
-      if (!token) {
-        out.className = "out err";
-        out.textContent = "响应里没有 token 字段";
-        return;
-      }
-      currentToken = token;
-      out.className = "out ok";
-      out.textContent = token;
-      actions.style.display = "flex";
-      msgEl.textContent = "token 已就绪。点「验证账号」可以确认它属于谁。";
-    } catch (e) {
-      out.className = "out err";
-      out.textContent = "失败：" + (e && e.message ? e.message : e) + "\ncode 可能已过期，重新授权一次。";
-    } finally {
-      $("exchange").disabled = false;
-    }
+    out.textContent = code;
+    $("actions").style.display = "flex";
   });
 
-  $("copyToken").addEventListener("click", function () {
-    if (!currentToken) return;
+  $("copyCode").addEventListener("click", function () {
+    if (!current) return;
+    var btn = this;
     var ta = document.createElement("textarea");
-    ta.value = currentToken; ta.style.position = "fixed"; ta.style.opacity = "0";
-    document.body.appendChild(ta); ta.select();
+    ta.value = current;
+    ta.style.position = "fixed";
+    ta.style.opacity = "0";
+    document.body.appendChild(ta);
+    ta.select();
     try { document.execCommand("copy"); } catch (e) {}
     document.body.removeChild(ta);
-    this.textContent = "已复制 ✓";
-    var btn = this;
-    setTimeout(function () { btn.textContent = "复制 token"; }, 1600);
-  });
-
-  $("checkUser").addEventListener("click", async function () {
-    if (!currentToken) return;
-    out.className = "out";
-    out.textContent = "查询中…";
-    try {
-      var r = await callApiWithToken(currentToken, "/Student/Main", {});
-      var u = (r.data || {}).user_info || {};
-      out.className = "out ok";
-      out.textContent = (u.student_name || "-") + "\n" + (u.student_code || "-") + "\n" + (u.nick_name || "-");
-    } catch (e) {
-      out.className = "out err";
-      out.textContent = "查询失败：" + e.message;
-    }
+    btn.textContent = "已复制 ✓";
+    setTimeout(function () { btn.textContent = "复制"; }, 1500);
   });
 })();
 </script>
